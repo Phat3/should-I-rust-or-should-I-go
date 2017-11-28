@@ -1,5 +1,5 @@
 .PHONY: all service bundle spawn clean
-SERVICE=sample_py
+SERVICE=should_i_rust_or_should_i_go.py
 
 all: bundle
 

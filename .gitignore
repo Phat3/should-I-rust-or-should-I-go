@@ -1,5 +1,6 @@
 # Created by https://www.gitignore.io/api/go,vim,rust,linux,python,visualstudiocode
 
+
 ### Go ###
 # Binaries for programs and plugins
 *.exe
@@ -160,6 +161,7 @@ tags
 
 ### VisualStudioCode ###
 .vscode/*
+.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
