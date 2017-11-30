@@ -1,5 +1,5 @@
-SRCDIR = src
-BUILDDIR = build
+SRCDIR = ./src
+BUILDDIR = ../rw/build
 EXECNAME = commander
 
 all: dir $(EXECNAME)
