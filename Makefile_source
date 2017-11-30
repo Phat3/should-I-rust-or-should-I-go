@@ -1,0 +1,24 @@
+SRCDIR = src
+BUILDDIR = build
+EXECNAME = commander
+
+all: dir $(EXECNAME)
+
+dir:
+	mkdir -p $(BUILDDIR)
+
+$(EXECNAME): frontend.a libcore.a
+	go tool link -o $(BUILDDIR)/$(EXECNAME) -extld clang -buildmode exe -linkmode external -v -extldflags='-lcore -L./$(BUILDDIR) -ldl'  $(BUILDDIR)/frontend.a
+
+frontend.a: $(SRCDIR)/frontend.go glue.o
+	go tool compile -o $(BUILDDIR)/frontend.a -p main -pack $(SRCDIR)/frontend.go
+	go tool pack r $(BUILDDIR)/frontend.a $(BUILDDIR)/glue.o
+
+glue.o: $(SRCDIR)/glue.s
+	go tool asm -I "$(shell go env GOROOT)/pkg/include" -D GOOS_darwin -D GOARCH_amd64 -o $(BUILDDIR)/glue.o $(SRCDIR)/glue.s
+
+libcore.a: $(SRCDIR)/core.rs
+	rustc -g -O --crate-type=staticlib --out-dir $(BUILDDIR) $(SRCDIR)/core.rs
+
+clean:
+	rm -rf $(BUILDDIR)
