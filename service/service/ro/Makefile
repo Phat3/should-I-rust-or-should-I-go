@@ -1,13 +1,23 @@
-rustgo: rustgo.a libhello.a
-	go tool link -o rustgo -extld clang -buildmode exe -buildid b01dca11ab1e -linkmode external -v -extldflags='-lhello -L. -ldl'  rustgo.a
+SRCDIR = src
+BUILDDIR = build
+EXECNAME = commander
 
-rustgo.a: hello.go hello.o
-	go tool compile -o rustgo.a -p main -buildid b01dca11ab1e -pack hello.go
-	go tool pack r rustgo.a hello.o
+all: dir $(EXECNAME)
 
-hello.o: hello.s
-	go tool asm -I "$(shell go env GOROOT)/pkg/include" -D GOOS_darwin -D GOARCH_amd64 -o hello.o hello.s
+dir:
+	mkdir -p $(BUILDDIR)
 
-libhello.a: hello.rs
-	rustc -g -O --crate-type=staticlib hello.rs
+$(EXECNAME): frontend.a 
+	go tool link -o $(BUILDDIR)/$(EXECNAME) -extld clang -buildmode exe -linkmode external -v -extldflags='-lcore -L./$(SRCDIR) -ldl'  $(BUILDDIR)/frontend.a
+	rm $(BUILDDIR)/glue.o $(BUILDDIR)/frontend.a
+
+frontend.a: glue.o
+	cp $(SRCDIR)/frontend.a $(BUILDDIR)/frontend.a
+	go tool pack r $(BUILDDIR)/frontend.a $(BUILDDIR)/glue.o
+
+glue.o: $(SRCDIR)/glue.s
+	go tool asm -I "$(shell go env GOROOT)/pkg/include" -D GOOS_darwin -D GOARCH_amd64 -o $(BUILDDIR)/glue.o $(SRCDIR)/glue.s
+
+clean:
+	rm -rf $(BUILDDIR)
 
