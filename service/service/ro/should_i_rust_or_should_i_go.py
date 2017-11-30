@@ -33,16 +33,23 @@ def main():
 
 def compile_service(stub):
     print "Try to compile the service..."
-    proc = subprocess.Popen(["pwd"], stdout=subprocess.PIPE)
-    print proc.stdout.read()
-    print "bye"
     with open("src/glue.s", "w") as glue:
         glue.write(stub)
-    proc = subprocess.Popen(["make"], stdout=subprocess.PIPE)
-    print proc.stdout.read()
-    sys.stdout.flush()
+    # proc = subprocess.Popen(["make"], stdout=subprocess.PIPE)
+    # print proc.stdout.read()
+    error_code = subprocess.call(["make"])
+    if error_code != 0:
+        print "The submitted stub is incorrect..."
+        sys.stdout.flush()
+        subprocess.call(["make", "clean"])
+        os.remove("src/glue.s")
+        return
     print stub
     sys.stdout.flush()
+    # execute_new_commander()
+
+# def executre_new_commander():
+
 
 if __name__ == "__main__":
     main()
