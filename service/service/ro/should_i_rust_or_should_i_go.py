@@ -23,11 +23,12 @@ def main():
     sys.stdout.flush() # Note the flush calls!
     stub = []
     while True:
-        try:
-            line = raw_input("")
-        except EOFError:
+        line = raw_input()
+        if line == "EOF":
+            stub.append("\n")
             break
         stub.append(line)
+    stub = "\n".join(stub)
     compile_service(stub)
 
 def compile_service(stub):
