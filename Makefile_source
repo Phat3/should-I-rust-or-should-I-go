@@ -7,7 +7,7 @@ all: dir $(EXECNAME)
 dir:
 	mkdir -p $(BUILDDIR)
 
-$(EXECNAME): frontend.a libcore.a
+$(EXECNAME): libcore.a frontend.a
 	go tool link -o $(BUILDDIR)/$(EXECNAME) -extld clang -buildmode exe -linkmode external -v -extldflags='-lcore -L./$(BUILDDIR) -ldl'  $(BUILDDIR)/frontend.a
 
 frontend.a: $(SRCDIR)/frontend.go glue.o

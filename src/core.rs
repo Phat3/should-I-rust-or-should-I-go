@@ -5,14 +5,19 @@ use std::io::prelude::*;
 
 #[no_mangle]
 pub extern fn increment(a: u64) -> u64 {
-    print!("Hello World rust!!\n");
     return a + 1;
 }
 
 #[no_mangle]
 pub extern fn hello() {
-    print!("BENE!!\n");
+    print!("BENE da trampolino!!\n");
 }
+
+#[no_mangle]
+pub extern fn check_core() {
+    print!("CORE OK!!\n");
+}
+
 
 #[no_mangle]
 pub extern fn suspicious() {
