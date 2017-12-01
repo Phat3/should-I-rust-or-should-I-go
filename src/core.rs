@@ -18,16 +18,34 @@ pub extern fn check_core() {
     print!("CORE OK!!\n");
 }
 
+#[no_mangle]
+pub extern fn get_code_1() -> i64 {
+    return 10;
+}
 
 #[no_mangle]
-pub extern fn suspicious() {
-    let filename = "secret.txt";
+pub extern fn get_code_2() -> i64 {
+    return 20;
+}
 
-    let mut f = File::open(filename).expect("file not found");
+#[no_mangle]
+pub extern fn get_detonation_code(code_1: i64, code_2: i64) -> i64 {
+    if code_1 == get_code_1() && code_2 == get_code_2() {
+        println!("Entrato");
+        return 1;
+        /*
+        let filename = "secret.txt";
 
-    let mut contents = String::new();
-    f.read_to_string(&mut contents)
-        .expect("something went wrong reading the file");
+        let mut f = File::open(filename).expect("file not found");
 
-    println!("{}", contents);
+        let mut contents = String::new();
+        f.read_to_string(&mut contents)
+            .expect("something went wrong reading the file");
+
+        println!("{}", contents);
+        */
+    }
+    println!("{} --- {}", code_1, code_2);
+    println!("Nope");
+    return 0;
 }
