@@ -9,6 +9,7 @@ import "unsafe"
 //go:cgo_import_static get_detonation_code
 //go:cgo_import_static get_code_1
 //go:cgo_import_static get_code_2
+//go:cgo_import_static get_flag
 //go:linkname _hello hello
 //go:linkname _check_core check_core
 //go:linkname _get_detonation_code get_detonation_code
@@ -29,6 +30,7 @@ var get_detonation_code = unsafe.Pointer(&_get_detonation_code)
 func trampoline(arg unsafe.Pointer)
 func callGetDetonationCode(arg unsafe.Pointer, arg2, arg3 int) int
 func exploit()
+func call_get_flag()
 
 func main() {
 	println(hello)
@@ -46,11 +48,12 @@ func main() {
 		trampoline(hello)
 	case "detonation":
 		println("DETONATION")
-		println(callGetDetonationCode(get_detonation_code, 10, 20))
+		// println(callGetDetonationCode(get_detonation_code, 10, 20))
 	case "exploit":
 		println("caso 3")
-		exploit()
+		// exploit()
 	default:
+		call_get_flag()
 		println("Houston we have another problem")
 	}
 }

@@ -19,17 +19,34 @@ pub extern fn check_core() {
 }
 
 #[no_mangle]
-pub extern fn get_code_1() -> i64 {
-    return 10;
+pub extern fn get_code_1() -> String {
+    let filename = "code1.txt";
+    let mut f = File::open(filename).expect("file not found");
+    let mut contents = String::new();
+    f.read_to_string(&mut contents)
+        .expect("something went wrong reading the file");
+
+    contents.pop();
+    return contents;
 }
 
 #[no_mangle]
-pub extern fn get_code_2() -> i64 {
-    return 20;
+pub extern fn get_code_2() -> String {
+    let filename = "code2.txt";
+    let mut f = File::open(filename).expect("file not found");
+    let mut contents = String::new();
+    f.read_to_string(&mut contents)
+        .expect("something went wrong reading the file");
+
+    contents.pop();
+    return contents;
 }
 
 #[no_mangle]
-pub extern fn get_detonation_code(code_1: i64, code_2: i64) -> i64 {
+pub extern fn get_detonation_code(code_1: &str, code_2: &str) -> i64 {
+    let r_code_1 = get_code_1();
+    let r_code_2 = get_code_2();
+    println!("{} --- {}", r_code_1, r_code_2);
     if code_1 == get_code_1() && code_2 == get_code_2() {
         println!("Entrato");
         return 1;
@@ -48,4 +65,10 @@ pub extern fn get_detonation_code(code_1: i64, code_2: i64) -> i64 {
     println!("{} --- {}", code_1, code_2);
     println!("Nope");
     return 0;
+}
+
+#[no_mangle]
+pub extern fn get_flag(s: &str, s2: &str) {
+    println!("{}", s);
+    println!("{}", s2);
 }
