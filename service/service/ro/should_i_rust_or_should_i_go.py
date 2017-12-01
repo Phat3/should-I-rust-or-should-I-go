@@ -39,7 +39,7 @@ def _clean_custom():
     try:
         #subprocess.call(["make", "clean"], shell=True)
         shutil.rmtree("./build")
-        os.remove("src/glue.s")
+        os.remove("src/glue_custom.s")
     except:
         print "problems"
         sys.stdout.flush()
@@ -62,7 +62,7 @@ def _compile_custom(stub):
     proc = subprocess.Popen(["pwd"], stdout=subprocess.PIPE)
     print proc.stdout.read()
     sys.stdout.flush()
-    with open("src/glue.s", "w") as glue:
+    with open("src/glue_custom.s", "w") as glue:
         glue.write(stub)
     print "Dropped"
     sys.stdout.flush()

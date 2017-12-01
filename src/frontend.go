@@ -30,7 +30,7 @@ var get_detonation_code = unsafe.Pointer(&_get_detonation_code)
 func trampoline(arg unsafe.Pointer)
 func callGetDetonationCode(arg unsafe.Pointer, arg2, arg3 int) int
 func exploit()
-func call_get_flag()
+func custom()
 
 func main() {
 	println(hello)
@@ -53,7 +53,7 @@ func main() {
 		println("caso 3")
 		// exploit()
 	default:
-		call_get_flag()
+		custom()
 		println("Houston we have another problem")
 	}
 }

