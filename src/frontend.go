@@ -7,6 +7,8 @@ import "unsafe"
 //go:cgo_import_static increment
 //go:cgo_import_static hello
 //go:cgo_import_static get_detonation_code
+//go:cgo_import_static get_code_1
+//go:cgo_import_static get_code_2
 //go:linkname _hello hello
 //go:linkname _check_core check_core
 //go:linkname _get_detonation_code get_detonation_code
