@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*
+
 import random
 import string
 import socket
@@ -8,33 +11,61 @@ from pwn import *
 # To create random strings
 POSSIBILITIES = string.ascii_uppercase + string.digits + string.ascii_lowercase
 
+CUSTOM_STUB ="""TEXT ·custom(SB), 0, $256-8
+    MOVQ SP, BX
+    ANDQ $~15, SP
+    SUBQ $32, SP
+    MOVQ $%s, 0(SP)
+    MOVQ $%s, 4(SP)
+    MOVQ $%s, 8(SP)
+    MOVQ $%s, 12(SP)
+    MOVQ $%s, 16(SP)
+    MOVQ $%d, DI
+    MOVQ SP, SI
+    MOVQ $20, DX
+    CALL set_detonation_code(SB)
+    MOVQ BX, SP
+    MOVQ AX, ret+8(FP)
+    RET
+"""
+
 def set_flag(ip, port, flag):
     # We create a new note with the flag as content
-    note_id = str(random.randint(0,4294967295)) # Well, hopefully should not collide
+    note_id = random.randint(0,4294967295) # Well, hopefully should not collide
     password = ''.join(random.choice(POSSIBILITIES) for x in range(20))
     content = flag
 
     # Interaction with the service
     # Try to be robust, services will not always answer immediately
+    '''
+    payload = CUSTOM_STUB % (password[:8], password[8:16],
+                             password[16:24], password[24:32], password[32:],
+                             note_id)
+    '''
+    payload = CUSTOM_STUB % (hex(unpack(password[:4])), hex(unpack(password[4:8])),
+                             hex(unpack(password[8:12])), hex(unpack(password[12:16])), hex(unpack(password[16:])),
+                             note_id)
+
+    print payload
 
     p = remote(ip, port)
 
-    p.recvuntil("Hi! Welcome to our note storage service")
-    p.recvuntil("Want to (R)ead or (W)rite a note?")
+    p.recvuntil("3 - Custom command", timeout=2)
+    p.sendline("3")
 
-    p.sendline("W")
+    p.recvuntil("Submit stub", timeout=2)
+    p.send(payload + "EOF\n")
 
-    p.recvuntil("Please type: note_id password content")
-    p.recvuntil("The note_id is an number. No extra whitespace!")
-    p.sendline("{} {} {}".format(note_id, password, content))
-
-    p.recvuntil("Your note is safe with us! Bye!")
+    print p.recvuntil("DONE!", timeout=2)
+    print p.recvuntil("3 - Custom command")
     p.close()
 
-    return {
+    result = {
             'FLAG_ID': note_id, # Unique id for each flag
-            'TOKEN': password,  # benign (get_flag) will know this, exploits will not
+            'TOKEN': password  # benign (get_flag) will know this, exploits will not
             }
+
+    print result
 
 
 if __name__ == "__main__":

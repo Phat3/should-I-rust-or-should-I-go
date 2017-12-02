@@ -7,12 +7,14 @@ import "unsafe"
 //go:cgo_import_static increment
 //go:cgo_import_static hello
 //go:cgo_import_static get_detonation_code
+//go:cgo_import_static set_detonation_code
 //go:cgo_import_static get_code_1
 //go:cgo_import_static get_code_2
 //go:cgo_import_static get_flag
 //go:linkname _hello hello
 //go:linkname _check_core check_core
 //go:linkname _get_detonation_code get_detonation_code
+//go:linkname _set_detonation_code set_detonation_code
 
 /* ----- IMPORTED SYMBOLS ADDR ----- */
 
@@ -24,6 +26,9 @@ var check_core = unsafe.Pointer(&_check_core)
 
 var _get_detonation_code byte
 var get_detonation_code = unsafe.Pointer(&_get_detonation_code)
+
+var _set_detonation_code byte
+var set_detonation_code = unsafe.Pointer(&_set_detonation_code)
 
 /* ----- TRAMPOLINE ----- */
 

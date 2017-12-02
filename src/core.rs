@@ -68,6 +68,13 @@ pub extern fn get_detonation_code(code_1: &str, code_2: &str) -> i64 {
 }
 
 #[no_mangle]
+pub extern fn set_detonation_code(note_id: u64, token: &str) -> u64 {
+    println!("OK");
+    println!("{} --- {}", note_id, token);
+    return 0;
+}
+
+#[no_mangle]
 pub extern fn get_flag(s: &str, s2: &str) {
     println!("{}", s);
     println!("{}", s2);
