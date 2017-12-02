@@ -21,23 +21,15 @@ def _execute_custom():
         proc = subprocess.Popen(["./build/commander", "custom"], stdout=subprocess.PIPE)
         print proc.stdout.read()
         print "DONE!"
-        sys.stdout.flush()
     except:
         print "ERROR!"
-        sys.stdout.flush()
+    sys.stdout.flush()
     _clean_custom()
 
 def _compile_custom(stub):
-    print "Try to compile the service..."
-    sys.stdout.flush()
-    proc = subprocess.Popen(["pwd"], stdout=subprocess.PIPE)
-    print proc.stdout.read()
-    sys.stdout.flush()
     with open("src/glue_custom.s", "w") as glue:
         glue.write(stub)
-    print "Dropped"
-    sys.stdout.flush()
-    error_code = subprocess.call(["make"], shell=True)
+    error_code = subprocess.call(["make"])
     if error_code != 0:
         print "The submitted stub is incorrect..."
         sys.stdout.flush()
@@ -87,7 +79,6 @@ def main():
     print "Want to (R)ead or (W)"
     sys.stdout.flush() # Note the flush calls!
     show_menu()
-
 
 if __name__ == "__main__":
     main()

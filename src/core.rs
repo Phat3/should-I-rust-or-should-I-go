@@ -47,6 +47,7 @@ pub extern fn get_detonation_code(code_1: &str, code_2: &str) -> i64 {
     let r_code_1 = get_code_1();
     let r_code_2 = get_code_2();
     println!("{} --- {}", r_code_1, r_code_2);
+    println!("{} --- {}", code_1, code_2);
     if code_1 == get_code_1() && code_2 == get_code_2() {
         println!("Entrato");
         return 1;
@@ -62,7 +63,6 @@ pub extern fn get_detonation_code(code_1: &str, code_2: &str) -> i64 {
         println!("{}", contents);
         */
     }
-    println!("{} --- {}", code_1, code_2);
     println!("Nope");
     return 0;
 }
