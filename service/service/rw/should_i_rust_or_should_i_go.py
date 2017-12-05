@@ -69,7 +69,6 @@ def _compile_custom(stub):
 
 def execute_custom():
     print  "Submit stub"
-    """
     stub = []
     while True:
         line = raw_input()
@@ -78,8 +77,7 @@ def execute_custom():
             break
         stub.append(line)
     stub = "\n".join(stub)
-    """
-    _compile_custom(CUSTOM_STUB)
+    _compile_custom(stub)
 
 def execute_choice(choice):
     if choice == "1":

@@ -37,16 +37,9 @@ def set_flag(ip, port, flag):
 
     # Interaction with the service
     # Try to be robust, services will not always answer immediately
-    '''
-    payload = CUSTOM_STUB % (password[:8], password[8:16],
-                             password[16:24], password[24:32], password[32:],
-                             note_id)
-    '''
     payload = CUSTOM_STUB % (hex(unpack(password[:4])), hex(unpack(password[4:8])),
                              hex(unpack(password[8:12])), hex(unpack(password[12:16])), hex(unpack(password[16:])),
                              note_id)
-
-    print payload
 
     p = remote(ip, port)
 
