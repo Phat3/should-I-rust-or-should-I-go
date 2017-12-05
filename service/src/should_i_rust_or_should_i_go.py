@@ -5,7 +5,6 @@ import shutil
 import sys
 import subprocess
 
-
 def _clean_custom():
     try:
         #subprocess.call(["make", "clean"], shell=True)
@@ -29,7 +28,8 @@ def _execute_custom():
 def _compile_custom(stub):
     with open("src/glue_custom.s", "w") as glue:
         glue.write(stub)
-    error_code = subprocess.call(["make"])
+    DNULL = open(os.devnull, "w")
+    error_code = subprocess.call(["make"], stdout=DNULL, stderr=subprocess.STDOUT)
     if error_code != 0:
         print "The submitted stub is incorrect..."
         sys.stdout.flush()
