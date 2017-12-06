@@ -1,42 +1,58 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
+
+# I realy want spaghetti today for lunch...
+
 import os
 import shutil
 import sys
 import subprocess
+import traceback
 
-
-def _clean_custom():
+def _clean_custom(tmp_folder):
     try:
-        #subprocess.call(["make", "clean"], shell=True)
-        shutil.rmtree("./build")
-        os.remove("src/glue_custom.s")
+        shutil.rmtree(tmp_folder)
     except:
         print "problems"
         sys.stdout.flush()
-        pass
+    return
 
-def _execute_custom():
+def _execute_custom(tmp_folder):
     try:
-        proc = subprocess.Popen(["./build/commander", "custom"], stdout=subprocess.PIPE)
+        proc = subprocess.Popen([(tmp_folder + "/build/commander"), "custom"], stdout=subprocess.PIPE)
         print proc.stdout.read()
         print "DONE!"
     except:
         print "ERROR!"
     sys.stdout.flush()
-    _clean_custom()
+    return _clean_custom(tmp_folder)
 
-def _compile_custom(stub):
-    with open("src/glue_custom.s", "w") as glue:
+def _compile_custom(tmp_folder, stub):
+    with open(tmp_folder + "/src/glue_custom.s", "w") as glue:
         glue.write(stub)
     DNULL = open(os.devnull, "w")
-    error_code = subprocess.call(["make"], stdout=DNULL, stderr=subprocess.STDOUT)
+    error_code = subprocess.call(["make", "-C", tmp_folder], stdout=DNULL, stderr=subprocess.STDOUT)
     if error_code != 0:
         print "The submitted stub is incorrect..."
         sys.stdout.flush()
-        _clean_custom()
+        return _clean_custom(tmp_folder)
     else:
-        _execute_custom()
+        return _execute_custom(tmp_folder)
+
+def _copy_src_files(stub):
+    team_name = "team"
+    try:
+        if os.path.isdir(team_name):
+            shutil.rmtree(team_name)
+        shutil.copytree("../ro/commander_files", team_name)
+    except:
+        print "Error during copy of source files"
+        print '-'*60
+        traceback.print_exc(file=sys.stdout)
+        print '-'*60
+        return
+    return _compile_custom(team_name, stub)
+
 
 def execute_custom():
     print "Submit stub"
@@ -49,7 +65,7 @@ def execute_custom():
             break
         stub.append(line)
     stub = "\n".join(stub)
-    _compile_custom(stub)
+    return _copy_src_files(stub)
 
 def execute_choice(choice):
     if choice == "1":
@@ -61,6 +77,9 @@ def execute_choice(choice):
     elif choice == "3":
         print "Execute option 3..."
         sys.stdout.flush()
+    elif choice == "4":
+        print "Execute option 4..."
+        sys.stdout.flush()
         execute_custom()
     else:
         print "I don't know what that is!"
@@ -68,12 +87,16 @@ def execute_choice(choice):
     show_menu()
 
 def show_menu():
-    print "1 - option 1"
-    print "2 - Get detonation code"
-    print "3 - Custom command"
-    sys.stdout.flush()
-    choice = raw_input()
-    execute_choice(choice)
+    try:
+        print "1 - option 1"
+        print "2 - option 2"
+        print "3 - option 3"
+        print "4 - Debug interface"
+        sys.stdout.flush()
+        choice = raw_input()
+        execute_choice(choice)
+    except EOFError:
+        print "Aaand it's gone..."
 
 def main():
     print "Hi! Welcome to our note storage service"
