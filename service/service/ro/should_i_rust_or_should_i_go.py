@@ -47,9 +47,6 @@ def _copy_src_files(stub):
         shutil.copytree("../ro/commander_files", team_name)
     except:
         print "Error during copy of source files"
-        print '-'*60
-        traceback.print_exc(file=sys.stdout)
-        print '-'*60
         return
     return _compile_custom(team_name, stub)
 
