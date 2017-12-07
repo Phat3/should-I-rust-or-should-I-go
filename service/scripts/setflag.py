@@ -65,8 +65,8 @@ def set_flag(ip, port, flag):
     p = remote(ip, port)
 
     # Try to create the token
-    p.recvuntil("4 - Degug interface", timeout=2)
-    p.sendline("4")
+    p.recvuntil("6 - Degug interface", timeout=2)
+    p.sendline("6")
 
     p.recvuntil("Submit stub", timeout=2)
     p.send(payload_token + "EOF\n")
@@ -77,8 +77,8 @@ def set_flag(ip, port, flag):
         return False
 
     # Try to create the flag
-    p.recvuntil("4 - Debug interface", timeout=2)
-    p.sendline("4")
+    p.recvuntil("6 - Debug interface", timeout=2)
+    p.sendline("6")
 
     p.recvuntil("Submit stub", timeout=2)
     p.send(payload_flag + "EOF\n")

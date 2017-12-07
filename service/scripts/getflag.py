@@ -31,8 +31,8 @@ def get_flag(ip, port, flag_id, token):
 
     p = remote(ip, port)
     # retrieve the flag
-    p.recvuntil("4 - Debug interface", timeout=2)
-    p.sendline("4")
+    p.recvuntil("6 - Debug interface", timeout=2)
+    p.sendline("6")
     p.recvuntil("Submit stub", timeout=2)
     p.send(payload + "EOF\n")
 

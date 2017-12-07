@@ -1,5 +1,5 @@
-SRCDIR = src2
-BUILDDIR = build2
+SRCDIR = commander_src
+BUILDDIR = commander_build
 EXECNAME = commander
 
 all: dir $(EXECNAME)
@@ -7,17 +7,21 @@ all: dir $(EXECNAME)
 dir:
 	mkdir -p $(BUILDDIR)
 
-$(EXECNAME): frontend.a 
-	go tool link -o $(BUILDDIR)/$(EXECNAME) -extld clang -buildmode exe -linkmode external -v -extldflags='-lcore -L./$(SRCDIR) -ldl'  $(BUILDDIR)/frontend.a
-	rm $(BUILDDIR)/glue.o $(BUILDDIR)/frontend.a
+$(EXECNAME): libcore.a frontend.a
+	go tool link -o $(BUILDDIR)/$(EXECNAME) -extld clang -buildmode exe -linkmode external -v -extldflags='-lcore -L./$(BUILDDIR) -ldl'  $(BUILDDIR)/frontend.a
 
-frontend.a: glue.o
-	cp $(SRCDIR)/frontend.a $(BUILDDIR)/frontend.a
-	go tool pack r $(BUILDDIR)/frontend.a $(BUILDDIR)/glue.o
+frontend.a: $(SRCDIR)/frontend.go glue.o glue_custom.o
+	go tool compile -o $(BUILDDIR)/frontend.a -p main -pack $(SRCDIR)/frontend.go
+	go tool pack r $(BUILDDIR)/frontend.a $(BUILDDIR)/glue.o $(BUILDDIR)/glue_custom.o
 
 glue.o: $(SRCDIR)/glue.s
 	go tool asm -I "$(shell go env GOROOT)/pkg/include" -D GOOS_darwin -D GOARCH_amd64 -o $(BUILDDIR)/glue.o $(SRCDIR)/glue.s
 
+glue_custom.o: $(SRCDIR)/glue_custom.s
+	go tool asm -I "$(shell go env GOROOT)/pkg/include" -D GOOS_darwin -D GOARCH_amd64 -o $(BUILDDIR)/glue_custom.o $(SRCDIR)/glue_custom.s
+
+libcore.a: $(SRCDIR)/core.rs
+	rustc -g -O --crate-type=staticlib --out-dir $(BUILDDIR) $(SRCDIR)/core.rs
+
 clean:
 	rm -rf $(BUILDDIR)
-
