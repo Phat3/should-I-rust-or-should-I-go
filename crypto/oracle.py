@@ -16,9 +16,10 @@ def encrypt_rsa(plaintext):
 
 
 def attack():
-    plaintext = raw_input()
-    cipherstream = encrypt_rsa(plaintext)
-    plaintext = decrypt_rsa(cipherstream)
+    # plaintext = raw_input()
+    # cipherstream = encrypt_rsa(plaintext)
+    ciphertext = binascii.unhexlify(raw_input())
+    plaintext = decrypt_rsa(ciphertext)
     print plaintext
     sys.stdout.flush()
 
