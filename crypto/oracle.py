@@ -15,18 +15,13 @@ def encrypt_rsa(plaintext):
     return cipherstream if not err else err
 
 
-def attack():
-    # plaintext = raw_input()
-    # cipherstream = encrypt_rsa(plaintext)
+def main():
+    print "Start service"
+    sys.stdout.flush()
     ciphertext = binascii.unhexlify(raw_input())
     plaintext = decrypt_rsa(ciphertext)
     print plaintext
     sys.stdout.flush()
-
-def main():
-    print "Start service"
-    sys.stdout.flush()
-    attack()
 
 if __name__ == "__main__":
     main()
