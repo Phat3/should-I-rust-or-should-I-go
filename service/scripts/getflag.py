@@ -46,4 +46,4 @@ def get_flag(ip, port, flag_id, token):
     return {"FLAG" : flag}
 
 if __name__ == "__main__":
-    print get_flag("127.0.0.1", 6666, 88334260, "3ilSkn0JcSbqaXyO7jkX")
+    print get_flag("127.0.0.1", 6666, 167148756, "FH0rX3uKaa6IjlfVsNps")
