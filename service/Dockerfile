@@ -11,7 +11,7 @@ WORKDIR /root/
 # 2 - Install dependencies from a custom url
 # 3 - Set environment variables
 # etc...
-RUN apt install -y \
+RUN apt install -y --no-install-recommends \
     python \
     python-pip \
     build-essential \
