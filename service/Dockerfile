@@ -31,7 +31,8 @@ USER chall
 WORKDIR /home/chall
 
 # ------------- Install local dependencies --------------
-RUN wget -O go.tar.gz https://dl.google.com/go/go1.9.2.linux-amd64.tar.gz  && tar xzvf go.tar.gz
+RUN wget -O go.tar.gz https://dl.google.com/go/go1.9.2.linux-amd64.tar.gz \
+    && tar xzvf go.tar.gz
 ENV PATH=/home/chall/go/bin:$PATH
 
 # ------------- Spawn the challenge --------------
