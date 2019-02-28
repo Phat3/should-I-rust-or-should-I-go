@@ -4,15 +4,21 @@ RUN apt update
 
 WORKDIR /root/
 # ------------- Install system dependencies --------------
-# 
+#
 # This is very flexible... you can:
-# 
+#
 # 1 - Install dependencies from a  package manager
 # 2 - Install dependencies from a custom url
 # 3 - Set environment variables
 # etc...
-RUN apt install -y python python-pip build-essential vim wget socat clang
-
+RUN apt install -y \
+    python \
+    python-pip \
+    build-essential \
+    vim \
+    wget \
+    socat \
+    clang
 # ------------- Creating unprivileged user for the challenge -------------
 #
 # After installing all the dependencies that need root privilege we need to define an
