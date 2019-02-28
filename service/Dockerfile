@@ -18,7 +18,9 @@ RUN apt install -y \
     vim \
     wget \
     socat \
-    clang
+    clang \
+&& rm -rf /var/lib/apt/lists/*
+
 # ------------- Creating unprivileged user for the challenge -------------
 #
 # After installing all the dependencies that need root privilege we need to define an
