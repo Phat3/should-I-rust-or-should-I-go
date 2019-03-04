@@ -1,17 +1,25 @@
 FROM ubuntu:18.04
 
-RUN apt update
+RUN apt-get update
 
 WORKDIR /root/
 # ------------- Install system dependencies --------------
-# 
+#
 # This is very flexible... you can:
-# 
+#
 # 1 - Install dependencies from a  package manager
 # 2 - Install dependencies from a custom url
 # 3 - Set environment variables
 # etc...
-RUN apt install -y python python-pip build-essential vim wget socat clang
+RUN apt-get install -y --no-install-recommends \
+    python \
+    python-pip \
+    build-essential \
+    vim \
+    wget \
+    socat \
+    clang \
+&& rm -rf /var/lib/apt/lists/*
 
 # ------------- Creating unprivileged user for the challenge -------------
 #
@@ -23,7 +31,9 @@ USER chall
 WORKDIR /home/chall
 
 # ------------- Install local dependencies --------------
-RUN wget -O go.tar.gz https://dl.google.com/go/go1.9.2.linux-amd64.tar.gz  && tar xzvf go.tar.gz
+RUN wget -O go.tar.gz https://dl.google.com/go/go1.9.2.linux-amd64.tar.gz \
+    && tar xzvf go.tar.gz \
+    && rm -f go.tar.gz
 ENV PATH=/home/chall/go/bin:$PATH
 
 # ------------- Spawn the challenge --------------
