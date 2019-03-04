@@ -12,7 +12,10 @@ services:
         source: ./service/rw
         target: /home/chall/service/rw
       - type: bind
-        source: ./service/root_owned
-        target: /home/chall/service/root_owned
+        source: ./service/rr
+        target: /home/chall/service/rr
+      - type: bind
+        source: ./service/append
+        target: /home/chall/service/append
     ports:
       - "6666:6666"

@@ -5,7 +5,3 @@ authors:
     - Sebastiano Mariani (Phate)
 description: Defuse the neutrino bomb befor it blows out the entire galaxy!
 flag_id_description: The flag is the code to defuse the neurtrino bomb 
-apt_dependencies: 
-    - sl
-pip_dependencies: 
-    - pwntools
